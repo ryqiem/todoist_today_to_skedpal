@@ -53,15 +53,10 @@ d = shelve.open("task_log.txt") #Define shelf for already sent tasks
 for task in inbox_tasks:
     if task.due_date_utc is not None:
         if task.due_date_utc[0:6] == datetime.date.today().strftime("%a %d"):
-            if task.content in d and d.get(task.content) == task.due_date_utc:
-                #Check if task is added, and has today as due date
-                print("Task already added, continuing")
-                continue
-            else:
                 zapier_to_skedpal(project_name="Inbox",
                                   Title=task.content,
                                   Plan_key="0",
                                   Priority="0",
                                   Duration="30m")
 
-                d[task.content] = task.due_date_utc
+                task.complete()
